@@ -1,0 +1,104 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class JDBCExample {
+   static final String DB_URL = "jdbc:mysql://localhost/TUTORIALSPOINT";
+   static final String USER = "guest";
+   static final String PASS = "guest123";
+   static final String QUERY = "SELECT id, first, last, age FROM Registration";
+
+   public static void main(String[] args) {
+      // Open a connection
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(QUERY);
+      ) {		      
+         while(rs.next()){
+            //Display values
+            System.out.print("ID: " + rs.getInt("id"));
+            System.out.print(", Age: " + rs.getInt("age"));
+            System.out.print(", First: " + rs.getString("first"));
+            System.out.println(", Last: " + rs.getString("last"));
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   }
+}
+package com.boraji.tutorial.jdbc;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class CreateTableExample {
+  
+  private static final String CREATE_TABLE_SQL="CREATE TABLE boraji.users ("
+                    + "UID INT NOT NULL,"
+                    + "NAME VARCHAR(45) NOT NULL,"
+                    + "DOB DATE NOT NULL,"
+                    + "EMAIL VARCHAR(45) NOT NULL,"
+                    + "PRIMARY KEY (UID))";
+  
+  public static void main(String[] args) {
+    String jdbcUrl = "jdbc:mysql://localhost:3306/BORAJI";
+    String username = "root";
+    String password = "admin";
+
+    Connection conn = null;
+    Statement stmt = null;
+
+    try {
+
+      conn = DriverManager.getConnection(jdbcUrl, username, password);
+      stmt = conn.createStatement();
+
+      stmt.executeUpdate(CREATE_TABLE_SQL);
+
+      System.out.println("Table created");
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (stmt != null) {
+          stmt.close();
+        }
+        if (conn != null) {
+          conn.close();
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+}
+public class dbConnect {
+
+        public static void connect(){
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+
+        String sql;
+            conn = null;
+            String url = "jdbc:mysql://localhost:3306/db_oopproject";
+            String driver = "com.mysql.jdbc.Driver";
+            try{
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url,"user","12345");
+
+                stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                sql = "Select * from user_account";
+                rs = stmt.executeQuery(sql);
+
+            }
+            catch (Exception e){
+                System.out.print(e.getMessage());
+            }
+        }
+
+
+    }
